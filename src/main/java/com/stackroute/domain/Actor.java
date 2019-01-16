@@ -8,21 +8,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Actor {
-    @Value("34")
     int age;
-    @Value("Male")
     String gender;
-    @Value("Amrit")
     String name;
-    public void setAge(int age) {
+
+    public Actor(int age, String gender, String name) {
         this.age = age;
-    }
-
-    public void setGender(String gender) {
         this.gender = gender;
-    }
-
-    public void setName(String name) {
         this.name = name;
     }
 
