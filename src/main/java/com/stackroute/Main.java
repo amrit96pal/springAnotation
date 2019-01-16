@@ -1,5 +1,6 @@
 package com.stackroute;
 
+import com.stackroute.config.Appconfig;
 import com.stackroute.domain.Movie;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionReader;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractXmlApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -15,16 +17,11 @@ import org.springframework.core.io.ClassPathResource;
 public class Main {
 
     public static void main(String[] args){
-        BeanFactory beanFactory;
-        beanFactory = new XmlBeanFactory(new ClassPathResource("beans.xml"));
-        Movie movie= (Movie) beanFactory.getBean("movie");
+        AnnotationConfigApplicationContext annotationConfigApplicationContext= new AnnotationConfigApplicationContext();
+        annotationConfigApplicationContext.register(Appconfig.class);
+        annotationConfigApplicationContext.refresh();
+        Movie movie= (Movie) annotationConfigApplicationContext.getBean("movie");
+        System.out.println("The age of the actor is: "+movie.getActor().getAge()+" The name is: "+movie.getActor().getName()+" and finally the gender is: "+movie.getActor().getGender());
 
-        BeanDefinitionRegistry beanDefinitionRegistry=new DefaultListableBeanFactory();
-        BeanDefinitionReader beanDefinitionReader=new XmlBeanDefinitionReader(beanDefinitionRegistry);
-        beanDefinitionReader.loadBeanDefinitions(new ClassPathResource("beans.xml"));
-        Movie movie2=((DefaultListableBeanFactory) beanDefinitionRegistry).getBean(Movie.class);
-
-        ApplicationContext applicationContext= new ClassPathXmlApplicationContext("beans.xml");
-        Movie movie1= (Movie) applicationContext.getBean("movie");
     }
 }
